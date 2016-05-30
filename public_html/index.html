@@ -36,29 +36,14 @@ and open the template in the editor.
                 game.load.image('sky', 'assets/sky.png');
                 game.load.image('ground', 'assets/platform.png');
                 game.load.image('star', 'assets/star.png');
-                game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
-                game.load.spritesheet('dudeViejo','assets/dudeViejo.png',32,48);
-                game.load.spritesheet('daftMov', 'assets/daftMov.png',125,180);
-                game.load.spritesheet('ninja', 'assets/movNinja7.png',930,840);
-//                game.load.audio('disp',['assets/battle008.mp3'],'assets/battle008.ogg');
-                game.load.audio('dis',['assets/disparo.mp3'],'assets/disparo.ogg');
-
-                game.load.audio('boden', ['assets/Goldfish.mp3'], 'assets/Goldfish.ogg');
-
-
+                game.load.spritesheet('dudeViejo', 'assets/dudeViejo.png', 32, 48);
+                game.load.spritesheet('ninja', 'assets/movNinja7.png', 930, 840);
             }
 
             var platforms;
             var music;
 
             function create() {
-//                disp = game.add.audio('disp');
-                dis=game.add.audio('dis');
-                music = game.add.audio('boden');
-                music.play();
-                //disp.play();
-
-                shootKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
                 game.add.sprite(0, 0, 'star');
                 //  We're going to be using physics, so enable the Arcade Physics system
                 game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -89,47 +74,22 @@ and open the template in the editor.
                 ledge = platforms.create(-150, 250, 'ground');
 
                 ledge.body.immovable = true;
-                
-                
-                 jug = game.add.sprite(200, 200, 'ninja');
-                 jug.scale.setTo(0.1,0.1);
-                 //jug.scale
+
+
+                jug = game.add.sprite(200, 200, 'ninja');
+                jug.scale.setTo(0.1, 0.1);
+                //jug.scale
 //                jug.body.scale.setTo(0.3,0.3);
                 game.physics.arcade.enable(jug);
 //                jug.body.bounce.y = 0.2;
 //                jug.body.gravity.y = 300;
                 jug.body.collideWorldBounds = true;
 //            jug.scale.setTo(0.3,0.3);
-        
-                     //jug.animations.add('baile', [0, 1, 2], 5, true);
-                     jug.animations.add('right', [3, 4, 5], 7, true);
-                     jug.animations.add('left', [0, 1, 2], 7, true);
-                     
-                     
-//                     for(var i=0;i<1;i++){
-//                        jug.animations.play('baile');
-//                    }
-                
-                
-                
 
-                // The player and its settings
-//                player = game.add.sprite(32, game.world.height - 150, 'dude');
-//                
-//
-//                //  We need to enable physics on the player
-//                game.physics.arcade.enable(player);
-//
-//                //  Player physics properties. Give the little guy a slight bounce.
-//                player.body.bounce.y = 0.2;
-//                player.body.gravity.y = 300;
-//                player.body.collideWorldBounds = true;
-//
-//                //  Our two animations, walking left and right.
-//                player.animations.add('left', [0, 1, 2, 3], 10, true);
-//                player.animations.add('right', [5, 6, 7, 8], 10, true);
-//                //nueva animacion
-//                player.animations.add('dispara', [9], 10, true);
+                //jug.animations.add('baile', [0, 1, 2], 5, true);
+                jug.animations.add('right', [3, 4, 5], 7, true);
+                jug.animations.add('left', [0, 1, 2], 7, true);
+
 
                 stars = game.add.group();
 
@@ -149,169 +109,52 @@ and open the template in the editor.
                 }
 
                 scoreText = game.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#000'});
-                
-                //  Being mp3 files these take time to decode, so we can't play them instantly
-    //  Using setDecodedCallback we can be notified when they're ALL ready for use.
-    //  The audio files could decode in ANY order, we can never be sure which it'll be.
 
-//    game.sound.setDecodedCallback([ disp ], start, this);
-            game.sound.setDecodedCallback([ dis ], start, this);
+                game.sound.setDecodedCallback([dis], start, this);
             }
-                    function update() {
+            function update() {
                 //  Collide the player and the stars with the platforms
                 game.physics.arcade.collide(jug, platforms);
-                
-//
+
                 cursors = game.input.keyboard.createCursorKeys();
-//                //  Reset the players velocity (movement)
-//               jug.body.velocity.x = 0;
-//                  
-                  if (cursors.right.isDown)
+
+                if (cursors.right.isDown)
                 {
-//                    //  Move to the left
                     jug.body.velocity.x = +150;
-//
                     jug.animations.play('right');
                 }
-//
-//
-//              
+
                 else if (cursors.left.isDown)
                 {
-//                    //  Move to the left
                     jug.body.velocity.x = -150;
-//
                     jug.animations.play('left');
                 }
                 else if (cursors.down.isDown)
                 {
-                    //  Move to the right
                     jug.body.velocity.y = 100;
-
-                    
                 }
-                 else if (cursors.up.isDown)
+                else if (cursors.up.isDown)
                 {
-                    //  Move to the right
                     jug.body.velocity.y = -100;
-
-                    
                 }
-                
+
                 else
                 {
                     jug.body.velocity.x = 0;
                     jug.body.velocity.y = 0;
-                    //  Stand still
                     jug.animations.stop();
-
                     jug.frame = 0;
                 }
-//
-//                //  Allow the player to jump if they are touching the ground.
-//                if (cursors.up.isDown && jug.body.touching.down)
-//                {
-//                    jug.body.velocity.y = -350;
-//                }
 
 
-//                game.physics.arcade.collide(stars, platforms);
-//                game.physics.arcade.overlap(player, stars, collectStar, null, this);
-
-//                if (shootKey.isDown) {
-////                    disp.play();
-//                    dis.play();
-//                    player.body.velocity.x = 0;
-//                    player.animations.play('dispara');
-//                }
+                function collectStar(player, star) {
+                    star.kill();
+                    score += 10;
+                    scoreText.text = 'Score: ' + score;
             }
-
-
-
-//            function update() {
-//                //  Collide the player and the stars with the platforms
-//                game.physics.arcade.collide(player, platforms);
-//                
-//
-//                cursors = game.input.keyboard.createCursorKeys();
-//                //  Reset the players velocity (movement)
-//                player.body.velocity.x = 0;
-//
-//                if (cursors.left.isDown)
-//                {
-//                    //  Move to the left
-//                    player.body.velocity.x = -150;
-//
-//                    player.animations.play('left');
-//                }
-//                else if (cursors.right.isDown)
-//                {
-//                    //  Move to the right
-//                    player.body.velocity.x = 150;
-//
-//                    player.animations.play('right');
-//                }
-//                else
-//                {
-//                    //  Stand still
-//                    player.animations.stop();
-//
-//                    //player.frame = 4;
-//                }
-//
-//                //  Allow the player to jump if they are touching the ground.
-//                if (cursors.up.isDown && player.body.touching.down)
-//                {
-//                    player.body.velocity.y = -350;
-//                }
-//
-//
-//                game.physics.arcade.collide(stars, platforms);
-//                game.physics.arcade.overlap(player, stars, collectStar, null, this);
-//
-//                if (shootKey.isDown) {
-////                    disp.play();
-//                    dis.play();
-//                    player.body.velocity.x = 0;
-//                    player.animations.play('dispara');
-//                }
-//            }
-
-
-            function collectStar(player, star) {
-
-                // Removes the star from the screen
-                star.kill();
-                //player = game.add.sprite(0,0,'dudeViejo');
-//                game.physics.arcade.enable(player2);
-//
-//                //  Player physics properties. Give the little guy a slight bounce.
-//                player2.body.bounce.y = 0.2;
-//                player2.body.gravity.y = 300;
-//                player2.body.collideWorldBounds = true;
-//
-//                //  Our two animations, walking left and right.
-//                player2.animations.add('left', [0, 1, 2, 3], 10, true);
-//                player2.animations.add('right', [5, 6, 7, 8], 10, true);
-//                game.physics.arcade.collide(player2,platforms);
-//                
-//                //nueva animacion
-//                player.kill();
-                //  Add and update the score
-                score += 10;
-                scoreText.text = 'Score: ' + score;
-            }
-
-//            function render() {
-//                game.debug.soundInfo(music, 20, 32);
-//            }
-
+        }
 
         </script>
-
-
-
-
 
     </body>
 </html>
