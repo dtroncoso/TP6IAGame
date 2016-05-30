@@ -16,6 +16,7 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="phaser.min.js"></script>
+        <script type="text/javascript" src="libreria/movninja.js"></script>
     </head>
 
 
@@ -29,6 +30,7 @@ and open the template in the editor.
             var score = 0;
             var scoreText;
             var shootKey;
+            var jug;
             //var shootKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
 
 
@@ -44,6 +46,8 @@ and open the template in the editor.
             var music;
 
             function create() {
+                
+                
                 game.add.sprite(0, 0, 'star');
                 //  We're going to be using physics, so enable the Arcade Physics system
                 game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -74,85 +78,32 @@ and open the template in the editor.
                 ledge = platforms.create(-150, 250, 'ground');
 
                 ledge.body.immovable = true;
+                
+                 cursors = game.input.keyboard.createCursorKeys();
 
-
-                jug = game.add.sprite(200, 200, 'ninja');
-                jug.scale.setTo(0.1, 0.1);
-                //jug.scale
-//                jug.body.scale.setTo(0.3,0.3);
-                game.physics.arcade.enable(jug);
-//                jug.body.bounce.y = 0.2;
-//                jug.body.gravity.y = 300;
-                jug.body.collideWorldBounds = true;
-//            jug.scale.setTo(0.3,0.3);
-
-                //jug.animations.add('baile', [0, 1, 2], 5, true);
-                jug.animations.add('right', [3, 4, 5], 7, true);
-                jug.animations.add('left', [0, 1, 2], 7, true);
-
-
-                stars = game.add.group();
-
-                stars.enableBody = true;
-
-                //  Here we'll create 12 of them evenly spaced apart
-                for (var i = 0; i < 12; i++)
-                {
-                    //  Create a star inside of the 'stars' group
-                    var star = stars.create(i * 70, 0, 'star');
-
-                    //  Let gravity do its thing
-                    star.body.gravity.y = 6;
-
-                    //  This just gives each star a slightly random bounce value
-                    star.body.bounce.y = 0.7 + Math.random() * 0.2;
-                }
+//                game, posx, posy, key, frame,target,cursors
+                jug = new movninja(game,0,500,'ninja',cursors);
+                
+//                game.add.sprite(200, 200, 'ninja');
 
                 scoreText = game.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#000'});
 
-                game.sound.setDecodedCallback([dis], start, this);
+//                game.sound.setDecodedCallback([dis], start, this);
             }
             function update() {
-                //  Collide the player and the stars with the platforms
+                
+                //PARA COMPLETAR
+                //1) DISCRETIZAR EL MUNDO
+                
+                //2) COLISIONES Y BLOQUEO DE NINJA EN PELEA CON MONGOL
+                
+                //3) MOVIMIENTOS MONGOLES 
+                
+                //MOVIMIENTOS NINJA:
                 game.physics.arcade.collide(jug, platforms);
-
-                cursors = game.input.keyboard.createCursorKeys();
-
-                if (cursors.right.isDown)
-                {
-                    jug.body.velocity.x = +150;
-                    jug.animations.play('right');
-                }
-
-                else if (cursors.left.isDown)
-                {
-                    jug.body.velocity.x = -150;
-                    jug.animations.play('left');
-                }
-                else if (cursors.down.isDown)
-                {
-                    jug.body.velocity.y = 100;
-                }
-                else if (cursors.up.isDown)
-                {
-                    jug.body.velocity.y = -100;
-                }
-
-                else
-                {
-                    jug.body.velocity.x = 0;
-                    jug.body.velocity.y = 0;
-                    jug.animations.stop();
-                    jug.frame = 0;
-                }
-
-
-                function collectStar(player, star) {
-                    star.kill();
-                    score += 10;
-                    scoreText.text = 'Score: ' + score;
+                jug.update();
             }
-        }
+        
 
         </script>
 
